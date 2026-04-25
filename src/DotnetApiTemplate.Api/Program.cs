@@ -1,4 +1,9 @@
+using DotnetApiTemplate.Core.Interfaces;
+using DotnetApiTemplate.Core.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<ITodoService, TodoService>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -21,7 +26,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -33,7 +38,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-app.Run();
+await app.RunAsync();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
